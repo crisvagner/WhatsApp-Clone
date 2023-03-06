@@ -199,10 +199,22 @@ class WhatsAppController {
         })
         this.el.btnAttachDocument.on('click', () => {
 
-            console.log('document')
+            this.el.panelMessagesContainer.hide();
+            this.el.panelDocumentPreview.addClass('open');
+            this.el.panelDocumentPreview.css({
+                'height': 'calc(100%)'
+            })
 
         });
 
+        this.el.btnClosePanelDocumentPreview.on('click', () => {
+            this.el.panelDocumentPreview.removeClass('open');
+            this.el.panelMessagesContainer.show();
+        })
+
+        this.el.btnSendDocument.on('click', () => {
+            this.el.inputDocument.click();
+        })
         this.el.btnAttachPhoto.on('click', () => {
 
             this.el.inputPhoto.click();
