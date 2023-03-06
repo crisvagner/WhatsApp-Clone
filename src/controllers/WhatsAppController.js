@@ -1,8 +1,6 @@
 class WhatsAppController {
 
     constructor() {
-        console.log('eeeeeeeeeeeeeeeeeeeeeee')
-
         this.loadElements();
         this.elementsPrototype();
         this.initEvents();
@@ -173,7 +171,7 @@ class WhatsAppController {
 
             event.stopPropagation();
 
-            this.el.menuAttach.toggleClass('open');
+            this.el.menuAttach.addClass('open');
 
             document.addEventListener('click', this.closeMenuAttach.bind(this));
 
@@ -197,6 +195,7 @@ class WhatsAppController {
         this.el.btnTakePicture.on('click', () => {
             console.log('btnTakePicture')
         })
+
         this.el.btnAttachDocument.on('click', () => {
 
             this.el.panelMessagesContainer.hide();
@@ -215,6 +214,7 @@ class WhatsAppController {
         this.el.btnSendDocument.on('click', () => {
             this.el.inputDocument.click();
         })
+
         this.el.btnAttachPhoto.on('click', () => {
 
             this.el.inputPhoto.click();
@@ -231,10 +231,16 @@ class WhatsAppController {
         })
 
         this.el.btnAttachContact.on('click', () => {
-
-            console.log('contact')
-
+            this.el.modalContacts.show();
         });
+
+        this.el.btnCloseModalContacts.on('click', () => {
+            this.el.modalContacts.hide();
+        })
+
+        this.el.contactList.on('click', () => {
+            console.log('contactList')
+        })
 
     }
 
