@@ -193,9 +193,18 @@ class WhatsAppController {
 
         this.el.btnAttachPhoto.on('click', () => {
 
-            console.log('photo')
+            this.el.inputPhoto.click();
 
         });
+
+        this.el.inputPhoto.on('change', () => {
+
+            console.log(this.el.inputPhoto.files);
+
+            [...this.el.inputPhoto.files].forEach(file => {
+                console.log(file)
+            })
+        })
 
         this.el.btnAttachContact.on('click', () => {
 
