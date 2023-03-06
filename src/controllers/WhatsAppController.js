@@ -89,6 +89,24 @@ class WhatsAppController {
             return this;
 
         }
+
+        HTMLFormElement.prototype.getForm = function () {
+
+            return new FormData(this);
+
+        }
+
+        HTMLFormElement.prototype.toJSON = function () {
+
+            let json = {};
+
+            this.getForm().forEach((value, key) => {
+                json[key] = value;
+            });
+
+            return json;
+
+        }
     }
 
     initEvents() {
@@ -96,7 +114,7 @@ class WhatsAppController {
         this.el.myPhoto.on('click', event => {
 
             this.el.panelAddContact.hide();
-            this.el.panelEditProfile.show().sleep(100, () => {
+            this.el.panelEditProfile.show().sleep(1, () => {
                 this.el.panelEditProfile.addClass('open');
             });
 
@@ -113,7 +131,7 @@ class WhatsAppController {
         this.el.btnNewContact.on('click', event => {
 
             this.el.panelEditProfile.hide()
-            this.el.panelAddContact.show().sleep(100, () => {
+            this.el.panelAddContact.show().sleep(1, () => {
                 this.el.panelAddContact.addClass('open');
             });
 
@@ -127,5 +145,71 @@ class WhatsAppController {
 
         });
 
+        this.el.photoContainerEditProfile.on('click', event => {
+
+            this.el.inputProfilePhoto.click();
+
+        });
+
+        this.el.inputNamePanelEditProfile.on('keypress', event => {
+
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this.el.btnSavePanelEditProfile.click();
+            }
+
+        });
+
+        this.el.contactsMessagesList.querySelectorAll('.contact-item').forEach(item => {
+            item.on('click', () => {
+                this.el.home.hide();
+                this.el.main.css({
+                    display: 'flex'
+                });
+            })
+        })
+
+        this.el.btnAttach.on('click', event => {
+
+            event.stopPropagation();
+
+            this.el.menuAttach.toggleClass('open');
+
+            document.addEventListener('click', this.closeMenuAttach.bind(this));
+
+        });
+
+        this.el.btnAttachCamera.on('click', () => {
+
+            console.log('camera')
+
+        });
+
+        this.el.btnAttachDocument.on('click', () => {
+
+            console.log('document')
+
+        });
+
+        this.el.btnAttachPhoto.on('click', () => {
+
+            console.log('photo')
+
+        });
+
+        this.el.btnAttachContact.on('click', () => {
+
+            console.log('contact')
+
+        });
+
     }
+
+    closeMenuAttach() {
+
+        this.el.menuAttach.removeClass('open');
+        document.removeEventListener('click', this.closeMenuAttach);
+
+    }
+
 }
