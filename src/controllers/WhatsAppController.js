@@ -181,10 +181,22 @@ class WhatsAppController {
 
         this.el.btnAttachCamera.on('click', () => {
 
-            console.log('camera')
+            this.el.panelMessagesContainer.hide();
+            this.el.panelCamera.addClass('open');
+            this.el.panelCamera.css({
+                'height': 'calc(100%)'
+            })
 
         });
 
+        this.el.btnClosePanelCamera.on('click', () => {
+            this.el.panelCamera.removeClass('open');
+            this.el.panelMessagesContainer.show();
+        })
+
+        this.el.btnTakePicture.on('click', () => {
+            console.log('btnTakePicture')
+        })
         this.el.btnAttachDocument.on('click', () => {
 
             console.log('document')
