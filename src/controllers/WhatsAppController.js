@@ -274,6 +274,105 @@ export class WhatsAppController {
             console.log('contactList')
         })
 
+        this.el.inputText.on('keypress', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.el.btnSend.click();
+            }
+        })
+
+        this.el.inputText.on('keyup', e => {
+
+            if (this.el.inputText.innerHTML.length) {
+
+                this.el.inputPlaceholder.hide();
+                this.el.btnSendMicrophone.hide();
+                this.el.btnSend.show();
+
+            } else {
+
+                this.el.inputPlaceholder.show();
+                this.el.btnSendMicrophone.show();
+                this.el.btnSend.hide();
+            }
+        })
+
+        this.el.btnSend.on('click', e => {
+            console.log(this.el.inputText.innerHTML)
+        })
+
+        this.el.btnEmojis.on('click', event => {
+
+            this.el.panelEmojis.toggleClass('open');
+
+            if (this.el.panelEmojis.hasClass('open')) {
+                this.el.iconEmojisOpen.hide();
+                this.el.iconEmojisClose.show();
+            } else {
+                this.el.iconEmojisOpen.show();
+                this.el.iconEmojisClose.hide();
+            }
+
+        });
+
+        this.el.panelEmojis.querySelectorAll('.emojik').forEach(emoji => {
+            emoji.on('click', event => {
+
+                let img = this.el.imgEmojiDefault.cloneNode();
+
+                img.style.cssText = emoji.style.cssText;
+                img.dataset.unicode = emoji.dataset.unicode;
+                img.alt = emoji.dataset.unicode;
+
+                emoji.classList.forEach(cls => {
+
+                    img.classList.add(cls);
+
+
+                });
+
+                //Retorna parte do texto selecionada pelo usuário ou a posição atual do cursor.
+                let cursor = window.getSelection();
+
+                //Se o cursor não estiver focado no campo de input, forçamos o focus
+                if (!cursor.focusNode || cursor.focusNode.id !== 'input-text') {
+                    this.el.inputText.focus();
+                    cursor = window.getSelection();
+                }
+
+                //Cria um novo objeto de controle de intervalos
+                let range = document.createRange();
+                //Retorna o intervalo atual do cursor
+                range = cursor.getRangeAt(0);
+                //Remove o conteúdo selecionado
+                range.deleteContents();
+                //Cria um fragmento de Documento
+                let frag = document.createDocumentFragment();
+                //Adiciona a imagem no fragmento
+                frag.appendChild(img);
+                //inserir o fragmento no intervalo
+                range.insertNode(frag);
+                //coloca o cursor após a imagem                    
+                range.setStartAfter(img);
+
+                this.el.inputText.dispatchEvent(new Event('keyup'));
+
+            })
+        })
+
+    }
+
+    startRecordMicrophoneTimer() {
+
+        let start = Date.now();
+
+        this._microphoneController = setInterval(() => {
+
+            this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - start);
+
+        }, 100);
+
+    }
     }
 
     closeMenuAttach() {
