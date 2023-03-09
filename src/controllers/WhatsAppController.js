@@ -444,6 +444,16 @@ export class WhatsAppController {
         });
 
     }
+
+    stopRecordMicrophoneTime() {
+
+        this.el.recordMicrophoneTimer.innerHTML = '00:00';
+        this._microphoneController.stopRecorder();
+
+        clearInterval(this.recordMicrophone);
+        this.el.recordMicrophone.hide();
+        this.el.btnSendMicrophone.show();
+
     }
 
     closeMenuAttach() {
