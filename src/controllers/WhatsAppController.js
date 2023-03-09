@@ -502,4 +502,12 @@ export class WhatsAppController {
 
     }
 
+    closeAllMainPanel() {
+
+        this.el.panelDocumentPreview.style.height = '10%';
+        this.el.panelDocumentPreview.removeClass('open');
+        this.el.panelCamera.removeClass('open');
+
+    }
+
 }
