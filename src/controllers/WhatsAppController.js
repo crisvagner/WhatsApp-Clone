@@ -1,5 +1,6 @@
 import { Format } from '../utils/Format';
 import { CameraController } from './CameraController';
+import { DocumentPreviewController } from './DocumentPreviewController';
 
 export class WhatsAppController {
 
@@ -241,15 +242,79 @@ export class WhatsAppController {
         this.el.btnClosePanelDocumentPreview.on('click', () => {
             this.el.panelDocumentPreview.removeClass('open');
             this.el.panelMessagesContainer.show();
-        })
+        });
 
         this.el.btnSendDocument.on('click', () => {
             this.el.inputDocument.click();
-        })
+        });
 
         this.el.btnAttachPhoto.on('click', () => {
 
             this.el.inputPhoto.click();
+
+        });
+
+        this.el.inputDocument.on('change', event => {
+
+            if (this.el.inputDocument.files.length) {
+
+                let file = this.el.inputDocument.files[0];
+
+                this.closeAllMainPanel();
+                this.el.panelMessagesContainer.hide();
+                this.el.panelDocumentPreview.addClass('open');
+                this.el.panelDocumentPreview.sleep(500, () => {
+                    this.el.panelDocumentPreview.style.height = 'calc(100%)';
+                });
+
+
+                this._documentPreview = new DocumentPreviewController(file);
+
+                this._documentPreview.getPriviewData().then(data => {
+
+                    this.el.filePanelDocumentPreview.hide();
+                    this.el.imagePanelDocumentPreview.show();
+                    this.el.imgPanelDocumentPreview.src = data.src;
+                    this.el.imgPanelDocumentPreview.show();
+
+                    this.el.infoPanelDocumentPreview.innerHTML = data.info;
+
+                }).catch(event => {
+
+                    if (event.error) {
+                        console.error(event.event);
+                    } else {
+
+                        switch (file.type) {
+                            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                            case 'application/msword':
+                                this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-doc';
+                                break;
+
+                            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                            case 'application/vnd.ms-excel':
+                                this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-xls';
+                                break;
+
+                            case 'application/vnd.ms-powerpoint':
+                            case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                                this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-ppt';
+                                break;
+
+                            default:
+                                this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-generic';
+                        }
+
+                        this.el.filePanelDocumentPreview.show();
+                        this.el.imagePanelDocumentPreview.hide();
+
+                        this.el.filenamePanelDocumentPreview.innerHTML = file.name;
+
+                    }
+
+                });
+
+            }
 
         });
 
