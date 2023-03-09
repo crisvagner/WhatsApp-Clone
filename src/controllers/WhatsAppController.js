@@ -427,15 +427,21 @@ export class WhatsAppController {
 
     }
 
-    startRecordMicrophoneTimer() {
+    startRecordMicrophoneTime() {
 
-        let start = Date.now();
+        this._microphoneController = new MicrophoneController();
 
-        this._microphoneController = setInterval(() => {
+        this._microphoneController.on('ready', event => {
 
-            this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - start);
+            this._microphoneController.startRecorder();
 
-        }, 100);
+        });
+
+        this._microphoneController.on('timer', (data, event) => {
+
+            this.el.recordMicrophoneTimer.innerHTML = data.displayTimer;
+
+        });
 
     }
     }
