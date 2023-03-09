@@ -1,6 +1,7 @@
 import { Format } from '../utils/Format';
 import { CameraController } from './CameraController';
 import { DocumentPreviewController } from './DocumentPreviewController';
+import { MicrophoneController } from './MicrophoneController';
 
 export class WhatsAppController {
 
@@ -338,6 +339,44 @@ export class WhatsAppController {
         this.el.contactList.on('click', () => {
             console.log('contactList')
         })
+
+        this.el.btnSendMicrophone.on('click', event => {
+
+            this.el.recordMicrophone.show();
+            this.el.btnSendMicrophone.hide();
+
+            this.startRecordMicrophoneTime();
+
+        });
+
+        this.el.btnCancelMicrophone.on('click', event => {
+
+            this.stopRecordMicrophoneTime();
+
+        });
+
+        this.el.btnFinishMicrophone.on('click', event => {
+
+            this._microphoneController.on('recorded', (file, metadata) => {
+
+
+                console.log(file);
+                console.log(metadata);
+
+                let reader = new FileReader();
+
+                reader.onload = e => {
+                    let audio = new Audio(reader.result)
+                    audio.play();
+                }
+
+                reader.readAsDataURL(file)
+
+            });
+
+            this.stopRecordMicrophoneTime();
+
+        });
 
         this.el.inputText.on('keypress', e => {
             if (e.key === 'Enter') {
